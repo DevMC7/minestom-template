@@ -6,11 +6,13 @@ import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.LightingChunk;
+import net.minestom.vanilla.VanillaReimplementation;
 
 public class Main {
 
 	public static InstanceManager instanceManager;
 	public static InstanceContainer instanceContainer;
+	public static VanillaReimplementation vri;
 
 	public static void main(String[] args) {
 		MinecraftServer server = MinecraftServer.init();
@@ -24,6 +26,8 @@ public class Main {
 		globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
 			event.setSpawningInstance(instanceContainer);
 		});
+
+		vri = VanillaReimplementation.hook(MinecraftServer.process());
 
 		server.start("0.0.0.0", 25565);
 	}

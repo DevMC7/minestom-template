@@ -21,14 +21,23 @@ fun getLatestMinestomVersion(): String {
     return response.substring(shaIndex, shaIndex + 10)
 }
 
+fun getLatestVriVersion(): String {
+    val url = "https://api.github.com/repos/Minestom/VanillaReimplementation/commits"
+    val connection = URI.create(url).toURL().openConnection()
+    connection.setRequestProperty("Accept", "application/vnd.github.v3+json")
+    val response = connection.getInputStream().bufferedReader().use { it.readText() }
+    val shaIndex = response.indexOf("\"sha\":\"") + 7
+    return response.substring(shaIndex, shaIndex + 10)
+}
+
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
 }
 
 dependencies {
-    implementation("org.slf4j:slf4j-simple:2.0.16")
     implementation("net.minestom:minestom-snapshots:${getLatestMinestomVersion()}")
+    implementation("com.github.Minestom:VanillaReimplementation:${getLatestVriVersion()}")
 }
 
 tasks.test {
